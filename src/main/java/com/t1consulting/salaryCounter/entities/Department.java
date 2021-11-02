@@ -57,6 +57,11 @@ public class Department {
 
     public void addEmployee(Employee employee) {
         employees.add(employee);
+        employee.setDepartment(this);
+    }
+
+    public void removeEmployee(Employee employee) {
+        employees.remove(employee);
     }
 
 }

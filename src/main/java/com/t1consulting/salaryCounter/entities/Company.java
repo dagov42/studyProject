@@ -1,5 +1,6 @@
 package com.t1consulting.salaryCounter.entities;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -23,14 +24,11 @@ public class Company {
         this.companyName = companyName;
     }
 
-    public boolean addDepartment(String departmentName) {
-        for (Department department : departments) {
-            if (!department.getName().equals(departmentName)) {
-                new Department(departmentName);
-                return true;
-            }
+    public void addDepartment(String departmentName) {
+        if (this.getDepartment(departmentName) == null) {
+            log.info("Department " + departmentName + " added");
+            departments.add(new Department(departmentName));
         }
-        return false;
     }
 
     public Department getDepartment(String name) {
@@ -39,6 +37,7 @@ public class Company {
                 return department;
             }
         }
+        log.info("Department " + name + " doesn't exist");
         return null;
     }
 
@@ -71,7 +70,10 @@ public class Company {
         }
         for (Map<Employee, Employee> employeeEmployeeMap : fromTo) {
             for (Map.Entry<Employee, Employee> entry : employeeEmployeeMap.entrySet()) {
-                String[] line = {entry.getKey().getSurname(), entry.getKey().getName()," change with ", entry.getValue().getSurname(), entry.getValue().getName()};
+                String[] line = {entry.getKey().getName() + " " + entry.getKey().getSurname()
+                        + " from " + entry.getKey().getDepartment().getName() + " change with "
+                        + entry.getValue().getName() + " " + entry.getValue().getSurname()
+                        + " from " + entry.getValue().getDepartment().getName()};
                 result.add(line);
             }
         }
@@ -83,7 +85,25 @@ public class Company {
         if (first.getEmployees().isEmpty() || second.getEmployees().isEmpty()) {
             log.warning("One of Department is empty");
         } else {
-            // add logic to find pair of Employee
+            BigDecimal firstDeptAVGSalary = first.getAverageSalary();
+            BigDecimal secondDeptAVGSalary = second.getAverageSalary();
+            for (int i = 0; i < first.getEmployees().size(); i++) {
+                for (int j = i + 1; j < second.getEmployees().size(); j++) {
+                    Employee firstDeptEmp = first.getEmployees().get(i);
+                    Employee secondDeptEmp = second.getEmployees().get(j);
+                    first.addEmployee(secondDeptEmp);
+                    second.addEmployee(firstDeptEmp);
+                    first.removeEmployee(firstDeptEmp);
+                    second.removeEmployee(secondDeptEmp);
+                    if (first.getAverageSalary().compareTo(firstDeptAVGSalary) > 0 && second.getAverageSalary().compareTo(secondDeptAVGSalary) > 0) {
+                        transferEmployees.put(firstDeptEmp, secondDeptEmp);
+                    }
+                    first.addEmployee(firstDeptEmp);
+                    second.addEmployee(secondDeptEmp);
+                    first.removeEmployee(secondDeptEmp);
+                    second.removeEmployee(firstDeptEmp);
+                }
+            }
         }
 
         return transferEmployees;

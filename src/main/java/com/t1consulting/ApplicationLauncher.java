@@ -17,7 +17,7 @@ public class ApplicationLauncher {
         InputFileReader reader = new InputFileReader(inputFileName);
         try {
             Company t1Consulting = new Company("T1 consulting");
-            List<Employee> employees = reader.getEmployeeList();
+            List<Employee> employees = reader.getEmployeeList(t1Consulting);
             t1Consulting.addEmployees(employees, t1Consulting);
             OutputFileWriter outputFileWriter = new OutputFileWriter();
             outputFileWriter.csvWriterAll(t1Consulting.getPossibleToTransferEmployees(), Path.of(outputFileName));

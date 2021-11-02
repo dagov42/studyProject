@@ -6,7 +6,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 import com.t1consulting.salaryCounter.entities.Company;
-import com.t1consulting.salaryCounter.entities.Department;
 import com.t1consulting.salaryCounter.entities.Employee;
 
 import java.io.BufferedReader;
@@ -31,7 +30,7 @@ public class InputFileReader {
         this.filename = filename;
     }
 
-    public List<Employee> getEmployeeList() throws IOException, CsvException {
+    public List<Employee> getEmployeeList(Company company) throws IOException, CsvException {
         Path myPath = Paths.get(filename);
         CSVParser parser = new CSVParserBuilder().withSeparator('\n').build();
         try (BufferedReader br = Files.newBufferedReader(myPath, StandardCharsets.UTF_8);
@@ -41,14 +40,15 @@ public class InputFileReader {
             for (String[] row : employees) {
                 log.info(row[0]);
                 List<String> items = Arrays.asList(row[0].split("\\s*,\\s*"));
-                employeeList.add(parseStringToEmployee(items));
+                employeeList.add(parseStringToEmployee(items, company));
             }
             return employeeList;
         }
     }
 
-    private Employee parseStringToEmployee(List<String> row) {
+    private Employee parseStringToEmployee(List<String> row, Company company) {
         Employee employee = new Employee();
+        employee.setCompany(company);
         String[] fullName = row.get(0).split(" ");
         employee.setName(fullName[0]);
         employee.setSurname(fullName[1]);
@@ -59,8 +59,9 @@ public class InputFileReader {
         employee.setPhoneNumber(row.get(5));
         employee.setPosition(row.get(6));
         employee.setSalary(new BigDecimal(row.get(6)));
-        employee.getCompany().addDepartment(row.get(7));
-        employee.setDepartment(employee.getCompany().getDepartment(row.get(7)));
+        company.addDepartment(row.get(7));
+        employee.setDepartment(company.getDepartment(row.get(7)));
+        company.getDepartment(row.get(7)).addEmployee(employee);
         return employee;
     }
 }
