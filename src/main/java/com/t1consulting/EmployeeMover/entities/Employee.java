@@ -1,4 +1,4 @@
-package com.t1consulting.salaryCounter.entities;
+package com.t1consulting.EmployeeMover.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

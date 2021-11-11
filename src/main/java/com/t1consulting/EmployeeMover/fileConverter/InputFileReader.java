@@ -1,9 +1,9 @@
-package com.t1consulting.fileConverter;
+package com.t1consulting.EmployeeMover.fileConverter;
 
 import com.opencsv.*;
 import com.opencsv.exceptions.CsvValidationException;
-import com.t1consulting.salaryCounter.entities.Company;
-import com.t1consulting.salaryCounter.entities.Employee;
+import com.t1consulting.EmployeeMover.entities.Company;
+import com.t1consulting.EmployeeMover.entities.Employee;
 import org.apache.commons.validator.routines.BigDecimalValidator;
 import org.apache.commons.validator.routines.DateValidator;
 import org.apache.commons.validator.routines.EmailValidator;

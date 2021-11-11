@@ -1,8 +1,8 @@
-package com.t1consulting;
+package com.t1consulting.EmployeeMover;
 
-import com.t1consulting.fileConverter.InputFileReader;
-import com.t1consulting.fileConverter.OutputFileWriter;
-import com.t1consulting.salaryCounter.entities.Company;
+import com.t1consulting.EmployeeMover.fileConverter.InputFileReader;
+import com.t1consulting.EmployeeMover.fileConverter.OutputFileWriter;
+import com.t1consulting.EmployeeMover.entities.Company;
 
 public class ApplicationLauncher {
 
