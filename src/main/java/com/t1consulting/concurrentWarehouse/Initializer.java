@@ -6,7 +6,6 @@ import com.t1consulting.concurrentWarehouse.entities.Warehouse;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
 
 public class Initializer {
@@ -22,7 +21,9 @@ public class Initializer {
         cyclicBarrier = new CyclicBarrier(customers);
         warehouse = new Warehouse(products, cyclicBarrier);
         for (int i = 0; i < customers; i++) {
-            customersList.add(new Customer(warehouse));
+            Customer customer = new Customer(warehouse);
+            customersList.add(customer);
+            customer.start();
         }
     }
 
